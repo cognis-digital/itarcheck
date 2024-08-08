@@ -1,3 +1,4 @@
 2024-06-15T08:40:20  docs: expand examples
 2024-06-20T15:57:27  fix(rules): support stdin as a source
 2024-07-14T10:14:34  perf(docs): fix off-by-one in line numbers
+2024-08-08T17:31:41  perf(mcp): extract the scorer
