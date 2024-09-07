@@ -3,3 +3,4 @@
 2024-07-14T10:14:34  perf(docs): fix off-by-one in line numbers
 2024-08-08T17:31:41  perf(mcp): extract the scorer
 2024-08-13T12:48:48  build(parser): add a --quiet mode
+2024-09-07T19:05:55  feat(engine): assert exit codes in tests
