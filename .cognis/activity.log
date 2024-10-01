@@ -4,3 +4,4 @@
 2024-08-08T17:31:41  perf(mcp): extract the scorer
 2024-08-13T12:48:48  build(parser): add a --quiet mode
 2024-09-07T19:05:55  feat(engine): assert exit codes in tests
+2024-10-01T14:22:02  refactor(scan): stream large files without buffering
