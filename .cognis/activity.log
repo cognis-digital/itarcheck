@@ -7,3 +7,4 @@
 2024-10-01T14:22:02  refactor(scan): stream large files without buffering
 2024-10-24T09:39:09  perf(detect): improve error messages with context
 2024-10-31T16:56:16  docs: standing on the shoulders of giants (garak, sigma, trufflehog)
+2024-11-24T11:13:23  refactor: future me will understand this
