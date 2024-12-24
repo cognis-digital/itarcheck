@@ -9,3 +9,4 @@
 2024-10-31T16:56:16  docs: standing on the shoulders of giants (garak, sigma, trufflehog)
 2024-11-24T11:13:23  refactor: future me will understand this
 2024-12-19T18:30:30  refactor(format): load rules lazily for faster startup
+2024-12-24T13:47:37  refactor(scoring): cover the multiline case
