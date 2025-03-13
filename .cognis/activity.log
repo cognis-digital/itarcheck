@@ -13,3 +13,4 @@
 2025-01-17T08:04:44  ci(output): handle empty and malformed input
 2025-02-11T15:21:51  build(config): normalize unicode before matching
 2025-02-16T10:38:58  docs(cache): add a dry-run flag
+2025-03-13T17:55:05  refactor(fixtures): add type hints to the public API
