@@ -17,3 +17,4 @@
 2025-04-06T12:12:12  ci(tests): guard against ReDoS in patterns
 2025-04-12T19:29:19  ci(ci): add a regression fixture
 2025-05-06T14:46:26  test: trust, but verify
+2025-05-30T09:03:33  docs: standing on the shoulders of giants (garak, sigma, trufflehog)
