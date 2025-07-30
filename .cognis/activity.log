@@ -21,3 +21,4 @@
 2025-06-06T16:20:40  style(deps): short-circuit on first critical
 2025-06-29T11:37:47  ci(docs): trim whitespace in parsed fields
 2025-07-23T18:54:54  chore(rules): add color + severity icons
+2025-07-30T13:11:01  docs(parser): tune severity weights
