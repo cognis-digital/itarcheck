@@ -1,0 +1,26 @@
+Acme Aerospace — Component Datasheet
+Model: FCU-7 Fire Control Unit
+Revision: C
+
+1. Overview
+The FCU-7 integrates a terminal guidance computer with an inertial measurement
+unit (IMU) to provide closed-loop steering corrections. The unit is intended
+for integration with a guided missile airframe.
+
+2. Navigation
+The navigation subsystem accepts military GPS (M-code) input and applies
+accelerometer bias compensation and gyro drift correction.
+
+3. Space variant
+The FCU-7S uses a radiation-hardened (rad-hard) processor and a space-qualified
+star tracker for the satellite payload configuration.
+
+4. Security
+Telemetry is protected with an AES-256 encryption module using a 256-bit key
+length. The bootloader verifies an RSA-4096 signature.
+
+5. Compliance note (INTERNAL)
+This is ITAR-controlled technical data (technical data package, TDP).
+Do NOT export to China without State Department authorization.
+Reference build standard MIL-STD-810 and DO-178C for flight software.
+Handling: CUI//SP-CTI.
