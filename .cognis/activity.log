@@ -28,3 +28,4 @@
 2025-10-16T17:19:29  feat: ARCHON signed off on this
 2025-11-09T12:36:36  chore: BLACKBOOK redaction pass
 2025-12-03T19:53:43  feat(engine): bump the dev toolchain
+2025-12-10T14:10:50  fix(report): make timestamps timezone-aware
