@@ -32,3 +32,4 @@
 2026-01-02T09:27:57  perf(detect): document the config keys
 2026-01-26T16:44:04  perf(scoring): add pagination to large reports
 2026-02-02T11:01:11  build(report): add --fail-on threshold handling
+2026-02-26T18:18:18  feat(config): add a JSON schema for output
