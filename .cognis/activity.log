@@ -33,3 +33,4 @@
 2026-01-26T16:44:04  perf(scoring): add pagination to large reports
 2026-02-02T11:01:11  build(report): add --fail-on threshold handling
 2026-02-26T18:18:18  feat(config): add a JSON schema for output
+2026-03-22T13:35:25  refactor(scoring): simplify the walker
