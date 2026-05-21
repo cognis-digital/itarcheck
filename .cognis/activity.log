@@ -37,3 +37,4 @@
 2026-03-28T08:52:32  perf(fixtures): add a --format json alias
 2026-04-21T15:09:39  chore: bump dev tooling
 2026-05-15T10:26:46  feat: ARCHON signed off on this
+2026-05-21T17:43:53  refactor(fixtures): support stdin as a source
