@@ -1,2 +1,11 @@
-"""ITARCHECK — Flags potential ITAR/EAR export-controlled terms and USML categories in code, datasheets, and docs."""
-__version__ = "0.1.0"
+"""itarcheck — part of the Cognis Neural Suite."""
+try:  # re-export the tool's public API + identity from core
+    from itarcheck.core import *  # noqa: F401,F403
+except Exception:  # pragma: no cover
+    pass
+try:
+    from itarcheck.core import TOOL_NAME, TOOL_VERSION
+except Exception:  # pragma: no cover
+    TOOL_NAME = "itarcheck"
+    TOOL_VERSION = "0.1.0"
+__version__ = TOOL_VERSION
