@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata: { name: itarcheck, labels: { app: itarcheck } }
+spec:
+  replicas: 1
+  selector: { matchLabels: { app: itarcheck } }
+  template:
+    metadata: { labels: { app: itarcheck } }
+    spec:
+      containers:
+        - name: itarcheck
+          image: ghcr.io/cognis-digital/itarcheck:latest
+          ports: [{ containerPort: 8000 }]
+          resources:
+            requests: { cpu: "50m", memory: "64Mi" }
+            limits: { cpu: "500m", memory: "256Mi" }
+---
+apiVersion: v1
+kind: Service
+metadata: { name: itarcheck }
+spec:
+  selector: { app: itarcheck }
+  ports: [{ port: 80, targetPort: 8000 }]
