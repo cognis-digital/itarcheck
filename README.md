@@ -20,6 +20,38 @@ pip install cognis-itarcheck
 itarcheck scan .            # → prioritized findings in seconds
 ```
 
+## Usage — step by step
+
+1. **Install** the screener:
+
+   ```bash
+   pip install cognis-itarcheck
+   ```
+
+2. **Scan code, datasheets, or docs** for ITAR/EAR export-control indicators and USML categories:
+
+   ```bash
+   itarcheck scan ./design-docs --fail-on high
+   ```
+
+3. **Emit JSON** (carries `gate_failed` and `fail_on`) for pipelines, and add extra extensions with repeatable `--ext`:
+
+   ```bash
+   itarcheck scan ./hdl --ext .vhd --format json | jq '.gate_failed'
+   ```
+
+4. **List USML categories** the engine maps against (22 CFR 121.1):
+
+   ```bash
+   itarcheck categories
+   ```
+
+5. **Gate a build.** Exit `1` when findings meet/exceed `--fail-on`, `0` otherwise. This is a screening aid, not a legal determination:
+
+   ```bash
+   itarcheck scan ./src --fail-on medium || echo 'review with an empowered official'
+   ```
+
 ## Contents
 
 - [Why itarcheck?](#why) · [Features](#features) · [Quick start](#quick-start) · [Example](#example) · [Architecture](#architecture) · [AI stack](#ai-stack) · [How it compares](#how-it-compares) · [Integrations](#integrations) · [Install anywhere](#install-anywhere) · [Related](#related) · [Contributing](#contributing)
