@@ -239,12 +239,31 @@ def scan_path(
 
     Binary / oversized / unreadable files are counted as skipped rather than
     raising, so the tool degrades gracefully in CI.
+
+    Raises:
+        FileNotFoundError: if *target* does not exist.
+        ValueError: if *max_bytes* is not a positive integer, or if any
+            supplied extension is not a non-empty string.
     """
+    if not isinstance(max_bytes, int) or max_bytes <= 0:
+        raise ValueError(
+            f"max_bytes must be a positive integer, got {max_bytes!r}"
+        )
+
     root = Path(target)
     if not root.exists():
         raise FileNotFoundError(f"path does not exist: {root}")
 
-    exts = frozenset(e.lower() for e in extensions) if extensions else DEFAULT_TEXT_EXTENSIONS
+    if extensions is not None:
+        ext_list = list(extensions)
+        for ext in ext_list:
+            if not isinstance(ext, str) or not ext:
+                raise ValueError(
+                    f"each extension must be a non-empty string, got {ext!r}"
+                )
+        exts = frozenset(e.lower() for e in ext_list)
+    else:
+        exts = DEFAULT_TEXT_EXTENSIONS
     result = ScanResult()
 
     for path in _iter_files(root, exts):

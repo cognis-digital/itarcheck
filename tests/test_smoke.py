@@ -120,5 +120,122 @@ class TestCLI(unittest.TestCase):
         self.assertIn(TOOL_VERSION, proc.stdout)
 
 
+class TestHardening(unittest.TestCase):
+    """Tests added to cover new error / edge-case paths."""
+
+    # --- CLI: missing file returns exit code 2 --------------------------------
+
+    def test_cli_missing_file_returns_exit_2(self):
+        rc = main(["scan", "/absolutely/no/such/path/xyz123"])
+        self.assertEqual(rc, 2)
+
+    def test_cli_missing_file_subprocess_exit_2(self):
+        proc = subprocess.run(
+            [sys.executable, "-m", "itarcheck", "scan", "/no/such/path/abc"],
+            cwd=REPO_ROOT, capture_output=True, text=True,
+        )
+        self.assertEqual(proc.returncode, 2)
+        self.assertIn("error", proc.stderr.lower())
+
+    # --- CLI: bad --ext flag (missing leading dot) returns exit code 2 --------
+
+    def test_cli_bad_ext_no_dot_returns_exit_2(self):
+        import tempfile
+        with tempfile.TemporaryDirectory() as d:
+            p = Path(d) / "clean.txt"
+            p.write_text("nothing here\n")
+            rc = main(["scan", str(p), "--ext", "vhd"])
+            self.assertEqual(rc, 2)
+
+    def test_cli_ext_with_dot_is_accepted(self):
+        import tempfile
+        with tempfile.TemporaryDirectory() as d:
+            p = Path(d) / "clean.vhd"
+            p.write_text("nothing here\n")
+            rc = main(["scan", str(d), "--ext", ".vhd"])
+            self.assertEqual(rc, 0)
+
+    # --- core: scan_text on empty input returns empty list --------------------
+
+    def test_scan_text_empty_string(self):
+        self.assertEqual(scan_text(""), [])
+
+    def test_scan_text_whitespace_only(self):
+        self.assertEqual(scan_text("   \n  \t  \n"), [])
+
+    # --- core: scan_path rejects invalid max_bytes ----------------------------
+
+    def test_scan_path_zero_max_bytes_raises(self):
+        with self.assertRaises(ValueError):
+            scan_path(REPO_ROOT / "demos", max_bytes=0)
+
+    def test_scan_path_negative_max_bytes_raises(self):
+        with self.assertRaises(ValueError):
+            scan_path(REPO_ROOT / "demos", max_bytes=-1)
+
+    def test_scan_path_invalid_extension_type_raises(self):
+        with self.assertRaises(ValueError):
+            scan_path(REPO_ROOT / "demos", extensions=[""])
+
+    # --- mcp_server: module compiles with correct imports ---------------------
+
+    def test_mcp_server_imports_cleanly(self):
+        """mcp_server must not import non-existent names from core."""
+        import importlib.util
+        spec = importlib.util.spec_from_file_location(
+            "mcp_server",
+            REPO_ROOT / "itarcheck" / "mcp_server.py",
+        )
+        mod = importlib.util.module_from_spec(spec)
+        # Should not raise ImportError for missing 'scan' / 'to_json'
+        try:
+            spec.loader.exec_module(mod)
+        except ImportError as exc:
+            self.fail(f"mcp_server import raised ImportError: {exc}")
+
+    # --- webhook: empty stdin / invalid URL handled cleanly ------------------
+
+    def test_webhook_empty_stdin_returns_2(self):
+        proc = subprocess.run(
+            [sys.executable, str(REPO_ROOT / "integrations" / "webhook.py"),
+             "--url", "http://localhost:9999"],
+            input="",
+            cwd=REPO_ROOT, capture_output=True, text=True,
+        )
+        self.assertEqual(proc.returncode, 2)
+        self.assertIn("empty", proc.stderr.lower())
+
+    def test_webhook_bad_json_returns_2(self):
+        proc = subprocess.run(
+            [sys.executable, str(REPO_ROOT / "integrations" / "webhook.py"),
+             "--url", "http://localhost:9999"],
+            input="not valid json at all!!!",
+            cwd=REPO_ROOT, capture_output=True, text=True,
+        )
+        self.assertEqual(proc.returncode, 2)
+        self.assertIn("json", proc.stderr.lower())
+
+    def test_webhook_bad_url_scheme_returns_2(self):
+        proc = subprocess.run(
+            [sys.executable, str(REPO_ROOT / "integrations" / "webhook.py"),
+             "--url", "ftp://example.com/findings"],
+            input='{"findings": []}',
+            cwd=REPO_ROOT, capture_output=True, text=True,
+        )
+        self.assertEqual(proc.returncode, 2)
+        self.assertIn("error", proc.stderr.lower())
+
+    def test_webhook_malformed_header_returns_2(self):
+        proc = subprocess.run(
+            [sys.executable, str(REPO_ROOT / "integrations" / "webhook.py"),
+             "--url", "http://localhost:9999",
+             "--header", "BadHeaderNoColon"],
+            input='{"findings": []}',
+            cwd=REPO_ROOT, capture_output=True, text=True,
+        )
+        self.assertEqual(proc.returncode, 2)
+        self.assertIn("error", proc.stderr.lower())
+
+
 if __name__ == "__main__":
     unittest.main()

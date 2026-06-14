@@ -32,3 +32,15 @@ itarcheck = "itarcheck.cli:main"
 
 [tool.hatch.build.targets.wheel]
 packages = ["itarcheck"]
+
+[tool.ruff]
+line-length = 88
+
+[tool.ruff.lint]
+select = ["E", "F"]
+
+[tool.ruff.lint.per-file-ignores]
+# Rule patterns are intentionally long regex strings; line length is unavoidable.
+"itarcheck/core.py" = ["E501"]
+# mcp_server docstring is intentionally long.
+"itarcheck/mcp_server.py" = ["E501"]

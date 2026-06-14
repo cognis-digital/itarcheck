@@ -60,10 +60,27 @@ def _print_findings_table(result, fail_on: Severity) -> None:
 
 def _cmd_scan(args: argparse.Namespace) -> int:
     fail_on = Severity(args.fail_on)
+
+    # Validate --ext values: each must start with '.' or be empty string ""
+    for ext in args.ext:
+        if ext and not ext.startswith("."):
+            print(
+                f"error: extension must start with '.' (got {ext!r}). "
+                "Example: --ext .vhd",
+                file=sys.stderr,
+            )
+            return 2
+
     try:
         result = scan_path(args.path, extensions=args.ext or None)
     except FileNotFoundError as exc:
         print(f"error: {exc}", file=sys.stderr)
+        return 2
+    except ValueError as exc:
+        print(f"error: {exc}", file=sys.stderr)
+        return 2
+    except OSError as exc:
+        print(f"error: could not access path: {exc}", file=sys.stderr)
         return 2
 
     if args.format == "json":
@@ -133,8 +150,18 @@ def build_parser() -> argparse.ArgumentParser:
 
 def main(argv: Sequence[str] | None = None) -> int:
     parser = build_parser()
-    args = parser.parse_args(argv)
-    return args.func(args)
+    try:
+        args = parser.parse_args(argv)
+    except SystemExit:
+        raise  # let argparse handle --help / bad flags normally
+    try:
+        return args.func(args)
+    except KeyboardInterrupt:
+        print("\ninterrupted", file=sys.stderr)
+        return 2
+    except Exception as exc:  # noqa: BLE001
+        print(f"error: unexpected failure: {exc}", file=sys.stderr)
+        return 2
 
 
 if __name__ == "__main__":
