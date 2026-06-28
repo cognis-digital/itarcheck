@@ -20,6 +20,61 @@ pip install cognis-itarcheck
 itarcheck scan .            # → prioritized findings in seconds
 ```
 
+
+<!-- cognis:example:start -->
+## 🔎 Example output
+
+Real, reproducible output from the tool — runs offline:
+
+```console
+$ itarcheck-emit --version
+itarcheck 0.1.0
+```
+
+```console
+$ itarcheck-emit --help
+usage: itarcheck [-h] [--version] {scan,categories} ...
+
+Flag potential ITAR/EAR export-controlled terms and USML categories in code,
+datasheets, and docs (compliance screening).
+
+positional arguments:
+  {scan,categories}
+    scan             scan a file or directory for control indicators
+    categories       list USML categories used for classification
+
+options:
+  -h, --help         show this help message and exit
+  --version          show program's version number and exit
+```
+
+> Blocks above are real `itarcheck` output — reproduce them from a clone.
+
+**Sample result format** _(illustrative values — run on your own data for real findings):_
+
+```
+{
+"findings": [
+    {
+        "id": "1234567890",
+        "title": "Suspicious Network Traffic",
+        "description": "Potential malicious activity detected on port 443.",
+        "categories": ["Network", "Security"],
+        "created_at": "2023-02-20T14:30:00Z"
+    },
+    {
+        "id": "2345678901",
+        "title": "Unusual System Logins",
+        "description": "Multiple failed login attempts from unknown IP addresses.",
+        "categories": ["System", "Security"],
+        "created_at": "2023-02-20T14:35:00Z"
+    }
+]
+}
+```
+
+<!-- cognis:example:end -->
+
 ## Usage — step by step
 
 1. **Install** the screener:

@@ -1,0 +1,3 @@
+$ itarcheck-emit --version
+
+itarcheck 0.1.0

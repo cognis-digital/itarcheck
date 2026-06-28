@@ -1,0 +1,15 @@
+$ itarcheck-emit --help
+
+usage: itarcheck [-h] [--version] {scan,categories} ...
+
+Flag potential ITAR/EAR export-controlled terms and USML categories in code,
+datasheets, and docs (compliance screening).
+
+positional arguments:
+  {scan,categories}
+    scan             scan a file or directory for control indicators
+    categories       list USML categories used for classification
+
+options:
+  -h, --help         show this help message and exit
+  --version          show program's version number and exit
